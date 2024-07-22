@@ -22,9 +22,7 @@ def call():
     print("asdasd")
     print(os.getcwd())
     print(sys.path)
-    with open("responses/test.json", "w", encoding="utf-8") as f:
-        response = requests.get(url=url, headers=headers)
-        f.write(response.text)
+
 
 
 if __name__ == "__name__":
