@@ -1,4 +1,4 @@
-from .config.config import Config
+from .config.headers import Headers
 from .api.eso import EsoApi
 
-__all__ = ["EsoApi", "Config"]
+__all__ = ["EsoApi", "Headers"]
