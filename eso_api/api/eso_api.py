@@ -24,6 +24,5 @@ def call():
     print(sys.path)
 
 
-
 if __name__ == "__name__":
     call()

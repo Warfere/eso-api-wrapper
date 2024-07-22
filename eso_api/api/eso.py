@@ -6,9 +6,9 @@ from typing import Dict
 
 
 class EsoApi(Call):
-    #TODO: return type from error and good response is list
-    #TODO: server side error returs 200 
-    #TODO: review headers class. Headers class is been passed. Need to decide if passing class or dict
+    # TODO: return type from error and good response is list
+    # TODO: server side error returs 200
+    # TODO: review headers class. Headers class is been passed. Need to decide if passing class or dict
     def __init__(self, headers: Headers, environment="dev") -> None:
         self.headers = headers
         self.environment = environment
