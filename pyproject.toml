@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "eso"
+name = "eso_api"
 version = "0.1.0"
 description = "Wrapper for eso.lt api"
 authors = ["Linas Kulbaciauskas"]
@@ -14,8 +14,17 @@ djangorestframework = "^3.15.2"
 markdown = "^3.6"
 django-filter = "^24.2"
 black = "^24.4.2"
+pydantic = "^2.8.2"
+mypy = "^1.10.1"
+behave = "^1.2.6"
+pytest = "^8.2.2"
+requests-mock = "^1.12.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+packages = [
+    { include = "eso_api" }
+]
