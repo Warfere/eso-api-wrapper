@@ -1,6 +1,5 @@
-# python-package-template
 
-This is a template repository for Python package projects.
+# Eso api wrapper
 
 ## In this README :point_down:
 
@@ -8,7 +7,6 @@ This is a template repository for Python package projects.
 - [Usage](#usage)
   - [Initial setup](#initial-setup)
   - [Creating releases](#creating-releases)
-- [Projects using this template](#projects-using-this-template)
 - [FAQ](#faq)
 - [Contributing](#contributing)
 

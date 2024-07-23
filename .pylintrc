@@ -5,4 +5,4 @@ disable=
     missing-module-docstring,
     missing-class-docstring
 
-ignore=venv,requirements.txt,README.md,pyproject.toml,LICENSE,poetry.lock
+ignore=venv,requirements.txt,README.md,pyproject.toml,LICENSE,poetry.lock, run.py

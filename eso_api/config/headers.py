@@ -1,15 +1,17 @@
+from typing import Optional
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field, AliasChoices
 from pydantic_core import ValidationError
 
 
+# pylint: disable=too-few-public-methods
 class HeadersModel(BaseModel):
     uuid: UUID = Field(
         alias="X-B3-TraceId",
         validation_alias=AliasChoices("X-B3-TraceId", "uuid"),
         default=None,
     )
-    api_key: str = None
+    api_key: Optional[str] = None
 
     def to_dict_without_none(self):
         return {
@@ -31,12 +33,12 @@ class Headers:
 
         self.uuid = str(uuid4())
         self.api_key = api_key
-        self.settings: HeadersModel = {
+        self.settings: dict[str, str] = {
             "api-key": self.api_key,
             "X-B3-TraceId": self.uuid,
         }
 
-    def update(self, headers: HeadersModel) -> HeadersModel | ValidationError:
+    def update(self, headers: dict[str, str]) -> dict[str, str] | ValidationError:
         """
         Updates headers for eso api
         Args:

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Optional
 from .call import Call
 from ..config.headers import Headers
 from .errors import EsoError
@@ -15,7 +15,7 @@ class EsoApi(Call):
         self.headers = headers
         self.environment = environment
 
-    def get_obejects(self, date: datetime, object_id: int = None) -> Dict:
+    def get_obejects(self, date: datetime, object_id: Optional[int] = None) -> Dict:
         url = f"objects-api/v1/objects/json?date={self.format_date(date)}"
         if object_id:
             url += f"&object_id={object_id}"
