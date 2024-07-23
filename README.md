@@ -1,198 +1,112 @@
-= Python API Wrapper Documentation
-:toc:
-Matthew1471 <https://github.com/matthew1471[@Matthew1471]>;
+# python-package-template
 
-// Document Settings:
+This is a template repository for Python package projects.
 
-// Set the ID Prefix and ID Separators to be consistent with GitHub so links work irrespective of rendering platform. (https://docs.asciidoctor.org/asciidoc/latest/sections/id-prefix-and-separator/)
-:idprefix:
-:idseparator: -
+## In this README :point_down:
 
-// Any code examples will be in Python by default.
-:source-language: python
+- [Features](#features)
+- [Usage](#usage)
+  - [Initial setup](#initial-setup)
+  - [Creating releases](#creating-releases)
+- [Projects using this template](#projects-using-this-template)
+- [FAQ](#faq)
+- [Contributing](#contributing)
 
-ifndef::env-github[:icons: font]
+## Features
 
-// Set the admonitions to have icons (Github Emojis) if rendered on GitHub (https://blog.mrhaki.com/2016/06/awesome-asciidoctor-using-admonition.html).
-ifdef::env-github[]
-:status:
-:caution-caption: :fire:
-:important-caption: :exclamation:
-:note-caption: :paperclip:
-:tip-caption: :bulb:
-:warning-caption: :warning:
-endif::[]
+This template repository comes with all of the boilerplate needed for:
 
-// Document Variables:
-:release-version: 1.0
-:url-org: https://github.com/Matthew1471
-:url-repo: {url-org}/Enphase-API
-:url-contributors: {url-repo}/graphs/contributors
+⚙️ Robust (and free) CI with [GitHub Actions](https://github.com/features/actions):
+  - Unit tests ran with [PyTest](https://docs.pytest.org) against multiple Python versions and operating systems.
+  - Type checking with [mypy](https://github.com/python/mypy).
+  - Linting with [ruff](https://astral.sh/ruff).
+  - Formatting with [isort](https://pycqa.github.io/isort/) and [black](https://black.readthedocs.io/en/stable/).
 
-== Introduction
+🤖 [Dependabot](https://github.blog/2020-06-01-keep-all-your-packages-up-to-date-with-dependabot/) configuration to keep your dependencies up-to-date.
 
-This unofficial API wrapper written in Python allows your applications to call the APIs and access information.
+📄 Great looking API documentation built using [Sphinx](https://www.sphinx-doc.org/en/master/) (run `make docs` to preview).
 
-More general details on the project are available from the xref:../../../README.adoc[project's homepage].
+🚀 Automatic GitHub and PyPI releases. Just follow the steps in [`RELEASE_PROCESS.md`](./RELEASE_PROCESS.md) to trigger a new release.
 
-== Getting Started
+## Usage
 
-=== Dependencies
+### Initial setup
 
-The wrapper uses 2 main third-party libraries. These can be installed by typing into your terminal:
+1. [Create a new repository](https://github.com/allenai/python-package-template/generate) from this template with the desired name of your project.
 
-[source,bash]
-----
-pip install PyJWT
-pip install requests
-----
+    *Your project name (i.e. the name of the repository) and the name of the corresponding Python package don't necessarily need to match, but you might want to check on [PyPI](https://pypi.org/) first to see if the package name you want is already taken.*
 
-=== Project Structure
+2. Create a Python 3.8 or newer virtual environment.
 
-The main wrapper lives in the `src\enphase_api` folder and the files in the `examples` directory are example scripts to show how to use the library. The examples are written to be fairly feature complete and considered fairly production ready, so they can be used as applications in their own right.
+    *If you're not sure how to create a suitable Python environment, the easiest way is using [Miniconda](https://docs.conda.io/en/latest/miniconda.html). On a Mac, for example, you can install Miniconda using [Homebrew](https://brew.sh/):*
 
-For configuration, each example refers to one of the two credentials files in the folder `configuration`; to make the examples work you will need to edit either `credentials_token.json` or `credentials.json` (depending on the file referenced in the example) to include your Enphase(R) credentials.
+    ```
+    brew install miniconda
+    ```
 
-Some examples use `credentials.json` as they are then able to repeatedly request a token to communicate with your IQ Gateway on their own, others are programmed to be run on embedded devices such as a Raspberry Pi where you may not wish to store your Enphase(R) username and password.
+    *Then you can create and activate a new Python environment by running:*
 
-WARNING: A token behaves like a time limited version of your username and password and so reasonable effort should be taken to protect any obtained tokens as they will have access to your account and device.
+    ```
+    conda create -n my-package python=3.9
+    conda activate my-package
+    ```
 
-Some of the examples either put or get messages from an https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol[Advanced Message Queuing Protocol (AMQP)] server/broker, this is because the IQ Gateway is not designed for a large number of requests, so it is better to query the data once and then make it available for other consuming clients via a message queue rather than have multiple scripts repeatedly query the same data. A free, open source and recommended AMQP server that runs on a variety of platforms is https://www.rabbitmq.com/download.html[RabbitMQ(R)]
+3. Now that you have a suitable Python environment, you're ready to personalize this repository. Just run:
 
-=== Sample Code
+    ```
+    pip install -r setup-requirements.txt
+    python scripts/personalize.py
+    ```
 
-To obtain a token you can use the Authentication class:
+    And then follow the prompts.
 
-[source]
-----
-# All the shared Enphase® functions are in these packages.
-from enphase_api.cloud.authentication import Authentication
+    :pencil: *NOTE: This script will overwrite the README in your repository.*
 
-# Connection Variables.
-ENPHASE_USERNAME = 'barry@example.com'
-ENPHASE_PASSWORD = 'mySecretPassW0rd!'
-IQ_GATEWAY_SERIAL_NUMBER = '123456'
+4. Commit and push your changes, then make sure all GitHub Actions jobs pass.
 
-# Authenticate with Enphase®'s authentication server and get a token.
-authentication = Authentication()
-authentication.authenticate(ENPHASE_USERNAME, ENPHASE_PASSWORD)
-token = authentication.get_token_for_commissioned_gateway(IQ_GATEWAY_SERIAL_NUMBER)
-print(token)
-----
+5. (Optional) If you plan on publishing your package to PyPI, add repository secrets for `PYPI_USERNAME` and `PYPI_PASSWORD`. To add these, go to "Settings" > "Secrets" > "Actions", and then click "New repository secret".
 
-Assuming your username and password is correct and you have permission to obtain a token for that IQ Gateway serial number, the authentication server (Entrez) should grant you a https://en.wikipedia.org/wiki/JSON_Web_Token[JWT (JSON Web Token)]. A JWT is basically a time-limited password where the issuer can be securely verified.
+    *If you don't have PyPI account yet, you can [create one for free](https://pypi.org/account/register/).*
 
-To reduce the load placed on the authentication server, you should store the JWT token in a file and then retrieve it for future sessions. Tokens created from a system owner username and password expire 1 year after issue, installers typically only have tokens valid for 12 hours (as they typically will only need access during installation or maintenance).
+6. (Optional) If you want to deploy your API docs to [readthedocs.org](https://readthedocs.org), go to the [readthedocs dashboard](https://readthedocs.org/dashboard/import/?) and import your new project.
 
-To make a call to the IQ Gateway you can simply run code similar to the following:
+    Then click on the "Admin" button, navigate to "Automation Rules" in the sidebar, click "Add Rule", and then enter the following fields:
 
-[source]
-----
-# All the shared Enphase® functions are in these packages.
-from enphase_api.local.gateway import Gateway
+    - **Description:** Publish new versions from tags
+    - **Match:** Custom Match
+    - **Custom match:** v[vV]
+    - **Version:** Tag
+    - **Action:** Activate version
 
-# Connection Variables.
-IQ_GATEWAY_HOST = 'https://192.168.0.100'
-TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI'
+    Then hit "Save".
 
-# Connect locally to the IQ Gateway, login and request production details.
-gateway = Gateway(IQ_GATEWAY_HOST)
-if gateway.login(TOKEN):
-    response = gateway.api_call('/production.json')
-    print(response)
-----
+    *After your first release, the docs will automatically be published to [your-project-name.readthedocs.io](https://your-project-name.readthedocs.io/).*
 
-Note how the script connected to the IQ Gateway via HTTPS but yet did not protest about an invalid certificate? It is far better security practice to store the trusted certificate and then ensure all future sessions rely on that specific certificate:
+### Creating releases
 
-[source]
-----
-# All the shared Enphase® functions are in these packages.
-from enphase_api.local.gateway import Gateway
+Creating new GitHub and PyPI releases is easy. The GitHub Actions workflow that comes with this repository will handle all of that for you.
+All you need to do is follow the instructions in [RELEASE_PROCESS.md](./RELEASE_PROCESS.md).
 
-Gateway.trust_gateway('https://192.168.0.100')
-----
+## Projects using this template
 
-This will download the certificate from the IQ Gateway and create a `configuration/gateway.cer` file (the path can be over-ridden with the optional parameter `cert_file`).
-The next time a request is made the IQ Gateway connection will be validated against this stored certificate (if you have over-ridden the path you will also have to over-ride your `Gateway(` command to include your over-ridden `cert_file`, otherwise the certificate will not be used).
+Here is an incomplete list of some projects that started off with this template:
 
-The gateway has its own mechanism for checking the validity of JWT values, however there is also a static `check_token_valid()` function inside the Authentication module that will allow you to check token validity before bothering the IQ Gateway with a request.
+- [ai2-tango](https://github.com/allenai/tango)
+- [cached-path](https://github.com/allenai/cached_path)
+- [beaker-py](https://github.com/allenai/beaker-py)
+- [gantry](https://github.com/allenai/beaker-gantry)
+- [ip-bot](https://github.com/abe-101/ip-bot)
+- [atty](https://github.com/mstuttgart/atty)
 
-It is highly recommended you look at the examples in a text-editor to learn more about the features of the library (and to see how this flow is typically implemented).
+☝️ *Want your work featured here? Just open a pull request that adds the link.*
 
-The IQ Gateway API endpoints are documented in the xref:../../IQ Gateway API/README.adoc[IQ Gateway API Documentation].
+## FAQ
 
-== Examples
+#### Should I use this template even if I don't want to publish my package?
 
-[cols="1,1,1,1,1,2", options="header"]
-|===
-|Filename
-|Config File
-|Dependencies
-|Source Data
-|Output Data
-|Description
+Absolutely! If you don't want to publish your package, just delete the `docs/` directory and the `release` job in [`.github/workflows/main.yml`](https://github.com/allenai/python-package-template/blob/main/.github/workflows/main.yml).
 
-|link:../../../Python/examples/amqp_database_meters.py[`amqp_database_meters.py`]
-|`credentials_token.json`
-|`mysql.connector` and `pika`
-|AMQP
-|MySQL(R)/MariaDB(R)
-|Consumes meter messages from AMQP and stores it in a MySQL(R)/MariaDB(R) database (schema is in the resources folder).
+## Contributing
 
-|link:../../../Python/examples/amqp_unicorn_hat_hd.py[`amqp_unicorn_hat_hd.py`]
-|`credentials_token.json`
-|`pika` and `unicornhathd`
-|AMQP
-|https://shop.pimoroni.com/products/unicorn-hat-hd[Unicorn HAT HD]
-|Consumes meter messages from AMQP and displays production and consumption data on a https://shop.pimoroni.com/products/unicorn-hat-hd[Unicorn HAT HD] running on a https://www.raspberrypi.com/products/[Raspberry Pi].
-
-|link:../../../Python/examples/database_pyplot_meters.py[`database_pyplot_meters.py`]
-|None
-|`mysql.connector` and `matplotlib`
-|MySQL(R)/MariaDB(R)
-|PyPlot
-|Displays meter production and consumption databased data in a chart using PyPlot.
-
-|link:../../../Python/examples/gateway_amqp_meters.py[`gateway_amqp_meters.py`]
-|`credentials_token.json`
-|`pika`
-|IQ Gateway
-|AMQP
-|Obtains meter information and publishes it to AMQP for consumption and statistics in other systems.
-
-|link:../../../Python/examples/gateway_console.py[`gateway_console.py`]
-|`credentials.json`
-|None
-|IQ Gateway
-|Console
-|Displays production data on the console/terminal then exits. Will attempt to refresh any expired tokens.
-
-|link:../../../Python/examples/gateway_database_meters.py[`gateway_database_meters.py`]
-|`credentials_token.json`
-|`mysql.connector`
-|IQ Gateway
-|MySQL(R)/MariaDB(R)
-|Obtains meter information and stores it in a MySQL(R)/MariaDB(R) database (schema is in the resources folder).
-
-|link:../../../Python/examples/gateway_generate_docs.py[`gateway_generate_docs.py`]
-|`credentials.json`
-|None
-|IQ Gateway
-|Documentation Files
-|This is a project resource to semi-automatically generate the documentation files. Will attempt to refresh any expired tokens.
-
-|link:../../../Python/examples/gateway_pyplot_meters.py[`gateway_pyplot_meters.py`]
-|`credentials_token.json`
-|`matplotlib`
-|IQ Gateway
-|PyPlot
-|Displays production and consumption data in a chart using PyPlot.
-
-|link:../../../Python/examples/gateway_unicorn_hat_hd.py[`gateway_unicorn_hat_hd.py`]
-|`credentials_token.json`
-|`pillow` and `unicornhathd`
-|IQ Gateway
-|https://shop.pimoroni.com/products/unicorn-hat-hd[Unicorn HAT HD]
-|Displays production and consumption data on a https://shop.pimoroni.com/products/unicorn-hat-hd[Unicorn HAT HD] running on a https://www.raspberrypi.com/products/[Raspberry Pi].
-
-|===
+If you find a bug :bug:, please open a [bug report](https://github.com/allenai/python-package-template/issues/new?assignees=&labels=bug&template=bug_report.md&title=).
+If you have an idea for an improvement or new feature :rocket:, please open a [feature request](https://github.com/allenai/python-package-template/issues/new?assignees=&labels=Feature+request&template=feature_request.md&title=).

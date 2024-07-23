@@ -1,5 +1,12 @@
 import pytest
-from eso_api.api.errors import *
+from eso_api.api.errors import (
+    BadRequestError,
+    ForbiddenResourceError,
+    NoContentError,
+    PayloadTooLargeError,
+    ResourceNotFoundError,
+    UnauthorizedError,
+)
 from eso_api.api.call import Call
 
 testdata = [
@@ -27,5 +34,5 @@ def test_no_errors():
     resp_dict = {"statusCode": 200, "message": "OK"}
     call = Call()
 
-    assert call.check_status(resp_dict) == None
-    assert call.check_status([]) == None
+    assert call.check_status(resp_dict) is None
+    assert call.check_status([]) is None

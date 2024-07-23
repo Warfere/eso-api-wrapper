@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field, AliasChoices
-from pydantic_core._pydantic_core import ValidationError
+from pydantic_core import ValidationError
 
 
 class HeadersModel(BaseModel):
@@ -17,6 +17,7 @@ class HeadersModel(BaseModel):
         }
 
 
+# pylint: disable=too-few-public-methods
 class Headers:
     def __init__(self, api_key: str) -> None:
         """Creates HeadersModel for eso api call
@@ -43,11 +44,7 @@ class Headers:
             uuid|X-B3-TraceId: UUID
             api_key: str
         """
-        print("######" * 30)
-        print(self.settings)
         model = HeadersModel.model_validate(headers).to_dict_without_none()
         new_headers = {k: str(v) for k, v in model.items()}
         self.settings.update(new_headers)
-        print(self.settings)
-        print("######" * 30)
         return self.settings
