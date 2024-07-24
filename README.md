@@ -43,7 +43,7 @@ response = eso.get_obejects(date)
 
 In case of some issues, server will return 200 but will have body:
 ```json
-{'statusCode': 401, 'message': 'Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription.'}
+{"statusCode": 401, "message": "Access denied due to invalid subscription key. Make sure to provide a valid key for an active subscription."}
 ```
 
 ## Contributing
