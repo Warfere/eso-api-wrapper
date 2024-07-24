@@ -7,7 +7,7 @@ from eso_api.api.errors import (
     PayloadTooLargeError,
     ResourceNotFoundError,
     UnauthorizedError,
-    EsoError
+    EsoError,
 )
 from ..config.headers import Headers
 

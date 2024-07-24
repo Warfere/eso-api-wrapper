@@ -18,6 +18,5 @@ class EsoApi(Call):
             url += f"&object_id={object_id}"
         return self.get(url, self.headers)
 
-
     def format_date(self, date: datetime) -> str:
         return date.astimezone().replace(microsecond=0).isoformat()
