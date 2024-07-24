@@ -27,7 +27,7 @@ class Call:
         return response.json()
 
     def check_status(self, resp_dict: Dict | List) -> None:
-        if isinstance(resp_dict,list):
+        if isinstance(resp_dict, list):
             return
         status = resp_dict.get("statusCode")
 
