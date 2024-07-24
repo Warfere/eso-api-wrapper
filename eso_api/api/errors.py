@@ -9,14 +9,10 @@ class EsoError(Exception):
         Constructs message from response and calls Exception
         Args:
             resp_dict (Dict):
-            {
-            "errorMessages": [
-                    {
-                    "code": "string",
-                    "text": "string"
-                    }
-                ]
-            }
+                {
+                    "statusCode": int,
+                    "message": "string"
+                }
         """
         super().__init__(resp_dict["message"])
 
@@ -27,14 +23,10 @@ class NoContentError(EsoError):
     but no data found according to the given parameters.
      Args:
         resp_dict (Dict):
-        {
-        "errorMessages": [
-                {
-                "code": "string",
-                "text": "string"
-                }
-            ]
-        }
+            {
+                "statusCode": int,
+                "message": "string"
+            }
     """
 
 
@@ -45,15 +37,11 @@ class BadRequestError(EsoError):
     headers, etc. must be specified).
     Constructs message from response and calls Exception
 
-        Args:
-            resp_dict (Dict):
+    Args:
+        resp_dict (Dict):
             {
-            "errorMessages": [
-                    {
-                    "code": "string",
-                    "text": "string"
-                    }
-                ]
+                "statusCode": int,
+                "message": "string"
             }
     """
 
@@ -65,15 +53,11 @@ class UnauthorizedError(EsoError):
     new or replaced Authorization header field.
     "Constructs message from response and calls Exception
 
-        Args:
-            resp_dict (Dict):
+    Args:
+        resp_dict (Dict):
             {
-            "errorMessages": [
-                    {
-                    "code": "string",
-                    "text": "string"
-                    }
-                ]
+                "statusCode": int,
+                "message": "string"
             }
     """
 
@@ -89,14 +73,10 @@ class ForbiddenResourceError(EsoError):
 
     Args:
         resp_dict (Dict):
-        {
-        "errorMessages": [
-                {
-                "code": "string",
-                "text": "string"
-                }
-            ]
-        }
+            {
+                "statusCode": int,
+                "message": "string"
+            }
     """
 
 
@@ -105,15 +85,11 @@ class ResourceNotFoundError(EsoError):
     Not Found 404 The server cannot find the requested resource
     Constructs message from response and calls Exception
 
-        Args:
-            resp_dict (Dict):
+    Args:
+        resp_dict (Dict):
             {
-            "errorMessages": [
-                    {
-                    "code": "string",
-                    "text": "string"
-                    }
-                ]
+                "statusCode": int,
+                "message": "string"
             }
     """
 
@@ -126,14 +102,10 @@ class PayloadTooLargeError(EsoError):
     (… MB). This response has size of … bytes.”
     Constructs message from response and calls Exception
 
-        Args:
-            resp_dict (Dict):
+    Args:
+        resp_dict (Dict):
             {
-            "errorMessages": [
-                    {
-                    "code": "string",
-                    "text": "string"
-                    }
-                ]
+                "statusCode": int,
+                "message": "string"
             }
     """
