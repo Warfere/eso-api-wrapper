@@ -6,7 +6,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 dill==0.3.8
--e git+https://github.com/Warfere/eso-api-wrapper.git@2fe7571d9dad1ad9c7197142b812513bbec93ceb#egg=eso_api
+-e git+https://github.com/Warfere/eso-api-wrapper.git@caeeead8f4f8115a6d1d94f2014964a43a662080#egg=eso_api
 idna==3.7
 iniconfig==2.0.0
 isort==5.13.2
