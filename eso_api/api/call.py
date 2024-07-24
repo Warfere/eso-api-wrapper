@@ -7,6 +7,7 @@ from eso_api.api.errors import (
     PayloadTooLargeError,
     ResourceNotFoundError,
     UnauthorizedError,
+    EsoError,
 )
 from ..config.headers import Headers
 
@@ -17,19 +18,21 @@ class Call:
     def __init__(self) -> None:
         pass
 
-    def get(self, url: str, headers: Headers) -> Dict:
-        print(headers.settings)
-        print(url)
-        response = requests.get(
-            DEV_HOST + url, headers=headers.settings, timeout=10
-        ).json()
+    def get(self, url: str, headers: Headers) -> List:
+        try:
+            response = requests.get(
+                DEV_HOST + url, headers=headers.settings, timeout=10
+            ).json()
+        except requests.Timeout as e:
+            return [{"error": e}]
+        except EsoError as e:
+            return [{"error": e}]
         self.check_status(response)
-        return response
+        return [response]
 
     def check_status(self, resp_dict: Dict | List) -> None:
         if isinstance(resp_dict, list):
             return
-        print(resp_dict)
         status = resp_dict.get("statusCode")
 
         if status == 204:
