@@ -11,7 +11,7 @@ if __name__ == "__main__":
     date = datetime(2024, 3, 1, 0, 0, 0)
     with open("response/get_obejects.json", "w", encoding="utf-8") as f:
         response = eso.get_obejects(date)
-        if isinstance(response, list) and response.get("error"):
+        if not isinstance(response, list) and response.get("error"):
             print(response)
         else:
             print(response)

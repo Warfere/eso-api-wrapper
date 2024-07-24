@@ -21,14 +21,15 @@ class Call:
         print(headers.settings)
         print(url)
         response = requests.get(
-            DEV_HOST + url, headers=headers.settings, timeout=5
+            DEV_HOST + url, headers=headers.settings, timeout=10
         ).json()
         self.check_status(response)
-        return response.json()
+        return response
 
     def check_status(self, resp_dict: Dict | List) -> None:
         if isinstance(resp_dict, list):
             return
+        print(resp_dict)
         status = resp_dict.get("statusCode")
 
         if status == 204:
