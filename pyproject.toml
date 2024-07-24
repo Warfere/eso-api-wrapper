@@ -18,6 +18,11 @@ pylint = "^3.2.6"
 mypy = "^1.11.0"
 types-requests = "^2.32.0.20240712"
 
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = [
+    "tests"
+]
 
 [build-system]
 requires = ["poetry-core"]
