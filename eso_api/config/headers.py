@@ -1,15 +1,17 @@
+from typing import Optional
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field, AliasChoices
-from pydantic_core._pydantic_core import ValidationError
+from pydantic_core import ValidationError
 
 
+# pylint: disable=too-few-public-methods
 class HeadersModel(BaseModel):
     uuid: UUID = Field(
         alias="X-B3-TraceId",
         validation_alias=AliasChoices("X-B3-TraceId", "uuid"),
         default=None,
     )
-    api_key: str = None
+    api_key: Optional[str] = None
 
     def to_dict_without_none(self):
         return {
@@ -17,6 +19,7 @@ class HeadersModel(BaseModel):
         }
 
 
+# pylint: disable=too-few-public-methods
 class Headers:
     def __init__(self, api_key: str) -> None:
         """Creates HeadersModel for eso api call
@@ -30,12 +33,12 @@ class Headers:
 
         self.uuid = str(uuid4())
         self.api_key = api_key
-        self.settings: HeadersModel = {
+        self.settings: dict[str, str] = {
             "api-key": self.api_key,
             "X-B3-TraceId": self.uuid,
         }
 
-    def update(self, headers: HeadersModel) -> HeadersModel | ValidationError:
+    def update(self, headers: dict[str, str]) -> dict[str, str] | ValidationError:
         """
         Updates headers for eso api
         Args:
@@ -43,11 +46,7 @@ class Headers:
             uuid|X-B3-TraceId: UUID
             api_key: str
         """
-        print("######" * 30)
-        print(self.settings)
         model = HeadersModel.model_validate(headers).to_dict_without_none()
         new_headers = {k: str(v) for k, v in model.items()}
         self.settings.update(new_headers)
-        print(self.settings)
-        print("######" * 30)
         return self.settings

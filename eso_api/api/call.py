@@ -1,6 +1,13 @@
-import requests
 from typing import Dict, List
-from .errors import *
+import requests
+from eso_api.api.errors import (
+    BadRequestError,
+    ForbiddenResourceError,
+    NoContentError,
+    PayloadTooLargeError,
+    ResourceNotFoundError,
+    UnauthorizedError,
+)
 from ..config.headers import Headers
 
 DEV_HOST = "https://api-dev.eso.lt/"
@@ -13,13 +20,16 @@ class Call:
     def get(self, url: str, headers: Headers) -> Dict:
         print(headers.settings)
         print(url)
-        response = requests.get(DEV_HOST + url, headers=headers.settings).json()
+        response = requests.get(
+            DEV_HOST + url, headers=headers.settings, timeout=10
+        ).json()
         self.check_status(response)
-        return response.json()
+        return response
 
     def check_status(self, resp_dict: Dict | List) -> None:
-        if type(resp_dict) == list:
+        if isinstance(resp_dict, list):
             return
+        print(resp_dict)
         status = resp_dict.get("statusCode")
 
         if status == 204:

@@ -1,16 +1,17 @@
-from eso_api import EsoApi
-from eso_api import Headers
-from eso_api.config.creds import api_key
 from datetime import datetime
 import json
 
+from eso_api import EsoApi
+from eso_api import Headers
+from eso_api.config.creds import API_KEY
+
 if __name__ == "__main__":
-    eso = EsoApi(Headers(api_key=api_key))
+    eso = EsoApi(Headers(api_key=API_KEY))
 
     date = datetime(2024, 3, 1, 0, 0, 0)
-    with open("response/getObejects.json", "w", encoding="utf-8") as f:
-        response = eso.getObejects(date)
-        if type(response) != list and response.get("error"):
+    with open("response/get_obejects.json", "w", encoding="utf-8") as f:
+        response = eso.get_obejects(date)
+        if not isinstance(response, list) and response.get("error"):
             print(response)
         else:
             print(response)
